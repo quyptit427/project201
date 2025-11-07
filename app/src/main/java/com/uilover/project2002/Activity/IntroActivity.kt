@@ -29,10 +29,9 @@ class IntroActivity : AppCompatActivity() {
 
         // Nếu chưa đăng nhập thì bấm nút mới cho qua Login
         binding.startBtn.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
+            startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
-
         window.setFlags(
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS

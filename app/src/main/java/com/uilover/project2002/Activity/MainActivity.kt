@@ -22,6 +22,7 @@ import com.uilover.project2002.Adapter.SliderAdapter
 import com.uilover.project2002.Models.Film
 import com.uilover.project2002.Models.SliderItems
 import com.uilover.project2002.auth.LoginActivity
+import com.uilover.project2002.auth.RegisterActivity
 import com.uilover.project2002.databinding.ActivityMainBinding
 
 
@@ -36,29 +37,54 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val currentUser = FirebaseAuth.getInstance().currentUser
-        if (currentUser == null) {
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
-            return
-        }
         super.onCreate(savedInstanceState)
 
+        // 1️⃣ Khởi tạo binding trước khi đụng vào nó
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 2️⃣ Firebase Auth
+        val auth = FirebaseAuth.getInstance()
+        val currentUser = auth.currentUser
+
+        // 3️⃣ Xử lý login / logout
+        if (currentUser != null) {
+            binding.layoutUserInfo.visibility = View.VISIBLE
+            binding.layoutLoginRegister.visibility = View.GONE
+            binding.tvHelloUser.text = "Hi, ${currentUser.email}"
+
+            binding.btnLogout.setOnClickListener {
+                auth.signOut()
+                recreate()
+            }
+        } else {
+            binding.layoutUserInfo.visibility = View.GONE
+            binding.layoutLoginRegister.visibility = View.VISIBLE
+
+            binding.btnGotoLogin.setOnClickListener {
+                startActivity(Intent(this, LoginActivity::class.java))
+            }
+
+            binding.btnGotoRegister.setOnClickListener {
+                startActivity(Intent(this, RegisterActivity::class.java))
+            }
+        }
+
+        // 4️⃣ Firebase Database
         database = FirebaseDatabase.getInstance()
 
+        // 5️⃣ Cấu hình giao diện toàn màn hình
         window.setFlags(
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         )
 
+        // 6️⃣ Khởi tạo các phần khác
         initBanner()
         initTopMoving()
         initUpcomming()
-
     }
+
 
     private fun initTopMoving() {
         val myRef: DatabaseReference = database.getReference("Items")
