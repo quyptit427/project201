@@ -52,6 +52,10 @@ dependencies {
     implementation(libs.firebase.database)
 
 
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+
     implementation ("com.github.bumptech.glide:glide:4.12.0")
     implementation ("com.github.ismaeldivita:chip-navigation-bar:1.4.0")
     implementation ("com.github.Dimezis:BlurView:version-2.0.3")
